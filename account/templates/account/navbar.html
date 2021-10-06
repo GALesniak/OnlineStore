@@ -1,0 +1,4 @@
+<h1>Navbar</h1>
+<span>Hello {{ request.user }}</span>
+<span><a href="{% url 'account:logout' %}">Logout</a></span>
+<span><a href="{% url 'onlineshop:product_list' %}">Go to the Main page</a></span>

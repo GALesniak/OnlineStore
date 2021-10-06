@@ -1,0 +1,64 @@
+{% extends 'onlineshop/base.html' %}
+{% load static %}
+
+{% block title %} Shopping Cart {% endblock title %}
+
+
+{% block content %}
+<main class="pt-5">
+  <div class="container">
+    <h1 class="h5">Shopping cart</h1>
+    {% for item in cart %}
+    {% with product=item.product %}
+    <div data-index="{{product.id}}" class="row mb-4 border product-item">
+
+      <div class="col-md-9 col-lg-10 ps-md-3 ps-lg-10">
+        <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-reset">
+          <h1 class="h5 pt-2">{{ product.name }}</h1>
+        </a>
+        <div class="border">
+          <div class="col border-bottom">
+            <div class="row p-3">
+              <div class="col-6">{{ product.name }}</div>
+              <div class="col-6 text-end"><span class="h6 fw-bold">${{ product.price }}</span></div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="row p-3">
+              <p class="col-12">
+                <label>Quantity</label>
+
+<div style="display: flex;">
+                  <form action="{% url "cart:cart_add" product.id %}" method="post">
+                            {% csrf_token %}
+                            {{ item.update_quantity_form.quantity }}
+                            {{ item.update_quantity_form.override }}
+                            <input class="btn btn-outline-secondary btn-sm update-button" type="submit" value="Update">
+
+                        </form>
+
+                    <form  action="{% url "cart:cart_remove" product.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-outline-secondary btn-sm delete-button" value="Remove">
+                        </form>
+                   </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+    <div class="col-12 text-end">
+      <div class="h6 fw-bold">Total: $ {{ cart.get_total_price }}<div id="subtotal" class="d-inline-flex"></div></div>
+    </div>
+  </div>
+ <div class="d-grid gap-2">
+        <a href="{% url "onlineshop:product_list" %}" class="btn btn-primary" type="button">Continue Shopping</a>
+        <a href="{% url "account:register" %}" class="btn btn-primary" type="button">Checkout</a>
+    </div>
+</main>
+
+
+{% endblock content %}
+
